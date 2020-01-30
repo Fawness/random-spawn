@@ -1,8 +1,6 @@
 package me.josvth.randomspawn.listeners;
 
 import java.util.List;
-import java.util.Set;
-
 import me.josvth.randomspawn.RandomSpawn;
 import me.josvth.randomspawn.events.NewPlayerSpawn;
 
@@ -10,15 +8,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_10_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.metadata.FixedMetadataValue;
-
-import net.minecraft.server.v1_10_R1.BlockPosition;
 
 public class RespawnListener implements Listener{
 	
@@ -47,8 +41,8 @@ public class RespawnListener implements Listener{
 		List<String> spawnPointFlags = plugin.yamlHandler.worlds.getStringList(worldName + ".spawnpointson");
 				
 		if (event.isBedSpawn() && !randomSpawnFlags.contains("bedrespawn")){  		// checks if player should be spawned at his bed
-			BlockPosition pos = ((CraftPlayer)event.getPlayer()).getHandle().bedPosition;
-			if(pos != null && new Location(event.getRespawnLocation().getWorld(), pos.getX(), pos.getY(), pos.getZ()).getBlock().getType() == Material.BED_BLOCK) {
+			Player pos = event.getPlayer();
+			if(pos != null && new Location(event.getRespawnLocation().getWorld(), ((Location) pos).getX(), ((Location) pos).getY(), ((Location) pos).getZ()).getBlock().getType() == Material.WHITE_BED) {
 				plugin.logDebug(playerName + " is spawned at his bed!");
 				return; 
 			}

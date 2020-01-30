@@ -12,6 +12,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
@@ -220,29 +221,28 @@ public class RandomSpawn extends JavaPlugin{
 		world.getChunkAt(new Location(world, x, 0, z)).load();
 
 		double y = 0;
-		int blockid = 0;
+		Block blockid = null;
 
 		if(world.getEnvironment().equals(Environment.NETHER)) {
-			int blockYid = world.getBlockTypeIdAt((int) x, (int) y, (int) z);
-			int blockY2id = world.getBlockTypeIdAt((int) x, (int) (y+1), (int) z);
-			while(y < 128 && !(blockYid == 0 && blockY2id == 0)) {				
+			Block blockYid = world.getBlockAt((int) x, (int) y, (int) z);
+			Block blockY2id = world.getBlockAt((int) x, (int) (y+1), (int) z);
+			while(y < 128 ) {				
 				y++;
 				blockYid = blockY2id;
-				blockY2id = world.getBlockTypeIdAt((int) x, (int) (y+1), (int) z);
+				blockY2id = world.getBlockAt((int) x, (int) (y+1), (int) z);
 			}
 			if(y == 127) return -1;
 		}else {
 			y = 257;
-			while(y >= 0 && blockid == 0) {
+			while(y >= 0) {
 				y--;
-				blockid = world.getBlockTypeIdAt((int) x, (int) y, (int) z);
+				blockid = world.getBlockAt((int) x, (int) y, (int) z);
 			}
 			if(y == 0) return -1;
                         y++;
 		}
 
 		if (blacklist.contains(blockid)) return -1;
-		if (blacklist.contains(81) && world.getBlockTypeIdAt((int) x, (int) (y+1), (int) z) == 81) return -1; // Check for cacti
 
 		return y;
 	}
